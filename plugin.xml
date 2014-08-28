@@ -26,8 +26,8 @@
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="Printer">
-                <param name="android-package" value="de.appplant.cordova.plugin.custom.Printer"/>
+            <feature name="Custom">
+                <param name="android-package" value="de.appplant.cordova.plugin.custom.Custom"/>
             </feature>
         </config-file>
 
