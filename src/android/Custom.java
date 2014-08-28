@@ -18,11 +18,11 @@ public class Custom extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         try {
             if ("print".equals(action)){
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
+                Intent sendIntent = new Intent("com.blueslib.android.app.PrintService");
+
                 sendIntent.putExtra("MAC", "00:12:6F:39:CF:00");
                 sendIntent.putExtra("DATA", "Test Data\nNew Line");
-                sendIntent.setComponent(new ComponentName("com.blueslib.android.app","com.blueslib.android.app.PrintService"));
+                sendIntent.setPackage("com.blueslib.android.app");
          
                cordova.startActivityForResult(this, sendIntent, 0);
                callbackContext.success();
