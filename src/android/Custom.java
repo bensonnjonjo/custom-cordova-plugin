@@ -40,17 +40,10 @@ public class Custom extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         try {
             if ("print".equals(action)){
-                /*Intent sendIntent = new Intent("com.blueslib.android.app.PrintService");
-
-                sendIntent.putExtra("MAC", "00:12:6F:39:CF:00");
-                sendIntent.putExtra("DATA", "Test Data\nNew Line");
-                sendIntent.setPackage("com.blueslib.android.app");
-         
-               cordova.startActivityForResult(this, sendIntent, 0);
-               */
-               this.blueBambooPrint();
-               callbackContext.success();
-               return true;
+                String content    = args.optString(0, "<html></html>");
+                this.blueBambooPrint(content);
+                callbackContext.success();
+                return true;
             }
             callbackContext.error("Invalid action");
             return false;
@@ -62,7 +55,7 @@ public class Custom extends CordovaPlugin {
     }
 
     /* -- Blue Bamboo Custom Code -- */
-    private void blueBambooPrint() 
+    private void blueBambooPrint(String content) 
     {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         CheckBTState();
@@ -94,8 +87,8 @@ public class Custom extends CordovaPlugin {
         } 
         catch (IOException e) {}
 
-        String message = "Hello from Android.\n";
-        byte[] msgBuffer = message.getBytes();
+        //String message = "Hello from Android.\n";
+        byte[] msgBuffer = content.getBytes();
         try 
         {
             outStream.write(msgBuffer);
