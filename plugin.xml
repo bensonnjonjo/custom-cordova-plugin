@@ -19,7 +19,7 @@
     </engines>
 
     <!-- interface -->
-    <js-module src="www/printer.js" name="Printer">
+    <js-module src="www/custom.js" name="Custom">
         <clobbers target="plugin.custom" />
     </js-module>
 
@@ -31,6 +31,6 @@
             </feature>
         </config-file>
 
-        <source-file src="src/android/Printer.java" target-dir="src/de/appplant/cordova/plugin/custom" />
+        <source-file src="src/android/Custom.java" target-dir="src/de/appplant/cordova/plugin/custom" />
     </platform>
 </plugin>
