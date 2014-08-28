@@ -5,6 +5,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 
 import org.json.JSONObject;
@@ -21,8 +22,8 @@ public class Custom extends CordovaPlugin {
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra("00:12:6F:39:CF:00", MAC);
-                sendIntent.putExtra("Test Data\nNew Line", DATA);
+                sendIntent.putExtra("MAC", "00:12:6F:39:CF:00");
+                sendIntent.putExtra("DATA", "Test Data\nNew Line");
                 sendIntent.setComponent(new ComponentName("com.blueslib.android.app","com.blueslib.android.app.PrintService"));
          
                this.cordova.getActivity().startService(sendIntent);
