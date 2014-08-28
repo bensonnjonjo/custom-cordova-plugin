@@ -12,7 +12,11 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-/* -- Blue Bamboo Custom Code -- */
+/* -- Blue Bamboo Custom Code -- */ 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.UUID;
+
 import android.os.Bundle;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
