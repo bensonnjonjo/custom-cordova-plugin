@@ -27,10 +27,10 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Printer">
-                <param name="android-package" value="de.appplant.cordova.plugin.printer.Printer"/>
+                <param name="android-package" value="de.appplant.cordova.plugin.custom.Printer"/>
             </feature>
         </config-file>
 
-        <source-file src="src/android/Printer.java" target-dir="src/de/appplant/cordova/plugin/printer" />
+        <source-file src="src/android/Printer.java" target-dir="src/de/appplant/cordova/plugin/custom" />
     </platform>
 </plugin>
