@@ -107,7 +107,7 @@ public class Custom extends CordovaPlugin {
             {
                 //Prompt user to turn on Bluetooth
                 Intent enableBtIntent = new Intent(btAdapter.ACTION_REQUEST_ENABLE);
-                cordova.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                cordova.startActivityForResult(this, enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
     }
