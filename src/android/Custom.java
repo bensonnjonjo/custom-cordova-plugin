@@ -48,7 +48,7 @@ public class Custom extends CordovaPlugin {
          
                cordova.startActivityForResult(this, sendIntent, 0);
                */
-               self.blueBambooPrint();
+               this.blueBambooPrint();
                callbackContext.success();
                return true;
             }
