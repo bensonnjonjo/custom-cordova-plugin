@@ -32,8 +32,6 @@ public class Custom extends CordovaPlugin {
     private OutputStream outStream = null;
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
-    private static String address = "00:12:6F:39:CF:00";
     /* -- End Blue Bamboo Custom Code -- */
 
     @Override
@@ -41,7 +39,8 @@ public class Custom extends CordovaPlugin {
         try {
             if ("print".equals(action)){
                 String content    = args.optString(0, "<html></html>");
-                this.blueBambooPrint(content);
+                String mac_address = args.optString(1);
+                this.blueBambooPrint(content, mac_address);
                 callbackContext.success();
                 return true;
             }
@@ -55,12 +54,12 @@ public class Custom extends CordovaPlugin {
     }
 
     /* -- Blue Bamboo Custom Code -- */
-    private void blueBambooPrint(String content) 
+    private void blueBambooPrint(String content, String mac_address) 
     {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         CheckBTState();
 
-        BluetoothDevice device = btAdapter.getRemoteDevice(address);
+        BluetoothDevice device = btAdapter.getRemoteDevice(mac_address);
         try 
         {
             btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
