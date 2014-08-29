@@ -38,7 +38,7 @@ public class Custom extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         try {
             if ("print".equals(action)){
-                String content    = args.optString(0, "<html></html>");
+                String content    = args.optString(0);
                 String mac_address = args.optString(1);
                 this.blueBambooPrint(content, mac_address);
                 callbackContext.success();
