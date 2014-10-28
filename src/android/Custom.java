@@ -33,6 +33,7 @@ public class Custom extends CordovaPlugin {
     private BluetoothDevice btDevice = null;
     private String printContent = "";
     private String printMacAddress = "";
+    private boolean printConnect = false;
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     /* -- End Blue Bamboo Custom Code -- */
@@ -48,7 +49,9 @@ public class Custom extends CordovaPlugin {
                 if(printConnect)
                 {
                     btAdapter = BluetoothAdapter.getDefaultAdapter();
-                    CheckBTState();
+                    if(CheckBTState()){
+                        this.blueBambooConnect();
+                    }
                 }
                 else{
                     this.blueBambooPrint();
@@ -66,15 +69,19 @@ public class Custom extends CordovaPlugin {
         }
     }
 
-    /* -- Blue Bamboo Custom Code -- */
-    private void blueBambooPrint() 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == REQUEST_ENABLE_BT) {
+            this.blueBambooConnect();
+        }
+    }
+
+    private void blueBambooConnect()
     {
-        if(btDevice == null)
-            btDevice = btAdapter.getRemoteDevice(printMacAddress);
+        btDevice = btAdapter.getRemoteDevice(printMacAddress);
         try 
         {
-            if(btSocket == null)
-                btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
+            btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
         } 
         catch (IOException e) {}
 
@@ -91,7 +98,11 @@ public class Custom extends CordovaPlugin {
             } 
             catch (IOException e2) {}
         }
+    }
 
+    /* -- Blue Bamboo Custom Code -- */
+    private void blueBambooPrint() 
+    {
         try 
         {
             outStream = btSocket.getOutputStream();
@@ -109,17 +120,11 @@ public class Custom extends CordovaPlugin {
                 outStream.flush();
             }
             catch (IOException e) {}
-
-            try 
-            {
-                btSocket.close();
-            }
-            catch (IOException e) {}
         } 
         catch (IOException e) {}
     }
 
-    private void CheckBTState() 
+    private boolean CheckBTState() 
     {
         if(btAdapter!=null) 
         {
@@ -130,6 +135,8 @@ public class Custom extends CordovaPlugin {
                 cordova.startActivityForResult(this, enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
+
+        return btAdapter.isEnabled();
     }
     /* -- End Blue Bamboo Custom Code -- */
 }
