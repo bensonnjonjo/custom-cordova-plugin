@@ -43,11 +43,14 @@ public class Custom extends CordovaPlugin {
             if ("print".equals(action)){
                 printContent    = args.optString(0);
                 printMacAddress = args.optString(1);
+                printConnect    = args.optString(2);
 
-                if(btAdapter == null)
+                if(printConnect)
+                {
                     btAdapter = BluetoothAdapter.getDefaultAdapter();
-
-                if(CheckBTState()){
+                    CheckBTState();
+                }
+                else{
                     this.blueBambooPrint();
                 }
                 callbackContext.success();
@@ -60,13 +63,6 @@ public class Custom extends CordovaPlugin {
             System.err.println("Exception: " + e.getMessage());
             callbackContext.error(e.getMessage());
             return false;
-        }
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == REQUEST_ENABLE_BT) {
-            this.blueBambooPrint();
         }
     }
 
@@ -123,7 +119,7 @@ public class Custom extends CordovaPlugin {
         catch (IOException e) {}
     }
 
-    private boolean CheckBTState() 
+    private void CheckBTState() 
     {
         if(btAdapter!=null) 
         {
@@ -134,8 +130,6 @@ public class Custom extends CordovaPlugin {
                 cordova.startActivityForResult(this, enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
-
-        return btAdapter.isEnabled();
     }
     /* -- End Blue Bamboo Custom Code -- */
 }
