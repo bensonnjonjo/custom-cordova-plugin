@@ -44,7 +44,7 @@ public class Custom extends CordovaPlugin {
                 printMacAddress = args.optString(1);
 
                 btAdapter = BluetoothAdapter.getDefaultAdapter();
-                
+
                 if(CheckBTState()){
                     this.blueBambooPrint();
                 }
@@ -65,9 +65,7 @@ public class Custom extends CordovaPlugin {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == REQUEST_ENABLE_BT) {
-            if (resultCode == RESULT_OK) {
-                this.blueBambooPrint();
-            }
+            this.blueBambooPrint();
         }
     }
 
