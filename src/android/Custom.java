@@ -123,12 +123,6 @@ public class Custom extends CordovaPlugin {
                 outStream.close();
             }
             catch (IOException e) {}
-
-            try 
-            {
-
-            }
-            catch (IOException e) {}
         } 
         catch (IOException e) {}
     }
