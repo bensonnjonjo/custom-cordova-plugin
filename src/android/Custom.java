@@ -33,7 +33,7 @@ public class Custom extends CordovaPlugin {
     private BluetoothDevice btDevice = null;
     private String printContent = "";
     private String printMacAddress = "";
-    private boolean printConnect = false;
+    private String printConnect = "false";
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     /* -- End Blue Bamboo Custom Code -- */
@@ -46,14 +46,15 @@ public class Custom extends CordovaPlugin {
                 printMacAddress = args.optString(1);
                 printConnect    = args.optString(2);
 
-                if(printConnect)
+                if(printConnect.equals("true"))
                 {
                     btAdapter = BluetoothAdapter.getDefaultAdapter();
                     if(CheckBTState()){
                         this.blueBambooConnect();
                     }
                 }
-                else{
+                else
+                {
                     this.blueBambooPrint();
                 }
                 callbackContext.success();
