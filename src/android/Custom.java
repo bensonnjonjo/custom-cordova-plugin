@@ -113,6 +113,8 @@ public class Custom extends CordovaPlugin {
             try 
             {
                 btSocket.close();
+                device = null;
+                btAdapter = null;
             }
             catch (IOException e) {}
         } 
