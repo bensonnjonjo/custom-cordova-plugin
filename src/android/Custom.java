@@ -110,7 +110,7 @@ public class Custom extends CordovaPlugin {
 
     }
 
-    private void printData(outStream)
+    private void printData(OutputStream outStream)
     {
         byte[] msgBuffer = printContent.getBytes();
         try 
