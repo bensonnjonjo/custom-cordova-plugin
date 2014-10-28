@@ -30,6 +30,7 @@ public class Custom extends CordovaPlugin {
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private OutputStream outStream = null;
+    private BluetoothDevice btDevice = null
     private String printContent = "";
     private String printMacAddress = "";
 
@@ -43,7 +44,8 @@ public class Custom extends CordovaPlugin {
                 printContent    = args.optString(0);
                 printMacAddress = args.optString(1);
 
-                btAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(btAdapter == null)
+                    btAdapter = BluetoothAdapter.getDefaultAdapter();
 
                 if(CheckBTState()){
                     this.blueBambooPrint();
@@ -71,10 +73,12 @@ public class Custom extends CordovaPlugin {
     /* -- Blue Bamboo Custom Code -- */
     private void blueBambooPrint() 
     {
-        BluetoothDevice device = btAdapter.getRemoteDevice(printMacAddress);
+        if(btDevice == null)
+            btDevice = btAdapter.getRemoteDevice(printMacAddress);
         try 
         {
-            btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+            if(btSocket == null)
+                btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
         } 
         catch (IOException e) {}
 
@@ -113,8 +117,6 @@ public class Custom extends CordovaPlugin {
             try 
             {
                 btSocket.close();
-                device = null;
-                btAdapter = null;
             }
             catch (IOException e) {}
         } 
