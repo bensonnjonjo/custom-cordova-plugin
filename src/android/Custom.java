@@ -99,17 +99,17 @@ public class Custom extends CordovaPlugin {
             } 
             catch (IOException e2) {}
         }
-    }
 
-    /* -- Blue Bamboo Custom Code -- */
-    private void blueBambooPrint() 
-    {
         try 
         {
             outStream = btSocket.getOutputStream();
         } 
         catch (IOException e) {}
+    }
 
+    /* -- Blue Bamboo Custom Code -- */
+    private void blueBambooPrint() 
+    {
         //String message = "Hello from Android.\n";
         byte[] msgBuffer = printContent.getBytes();
         try 
