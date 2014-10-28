@@ -74,7 +74,12 @@ public class Custom extends CordovaPlugin {
     private void blueBambooPrint() 
     {
         if(btSocket.isConnected()){
-            this.printData(btSocket.getOutputStream());
+            try 
+            {
+                outStream = btSocket.getOutputStream();
+                this.printData(outStream);
+            } 
+            catch (IOException e) {}
         }
         else{
             if(btDevice == null)
