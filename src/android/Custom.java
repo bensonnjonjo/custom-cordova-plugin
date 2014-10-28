@@ -73,36 +73,45 @@ public class Custom extends CordovaPlugin {
     /* -- Blue Bamboo Custom Code -- */
     private void blueBambooPrint() 
     {
-        if(btDevice == null)
-            btDevice = btAdapter.getRemoteDevice(printMacAddress);
-        try 
-        {
-            if(btSocket == null)
-                btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
-        } 
-        catch (IOException e) {}
-
-        btAdapter.cancelDiscovery();
-
-        try 
-        {
-            btSocket.connect();
-        } 
-        catch (IOException e) {
+        if(btSocket.isConnected()){
+            this.printData(btSocket.getOutputStream());
+        }
+        else{
+            if(btDevice == null)
+                btDevice = btAdapter.getRemoteDevice(printMacAddress);
             try 
             {
-                btSocket.close();
+                if(btSocket == null)
+                    btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
             } 
-            catch (IOException e2) {}
+            catch (IOException e) {}
+
+            btAdapter.cancelDiscovery();
+
+            try 
+            {
+                btSocket.connect();
+            } 
+            catch (IOException e) {
+                try 
+                {
+                    btSocket.close();
+                } 
+                catch (IOException e2) {}
+            }
+
+            try 
+            {
+                outStream = btSocket.getOutputStream();
+                this.printData(outStream);
+            } 
+            catch (IOException e) {}
         }
 
-        try 
-        {
-            outStream = btSocket.getOutputStream();
-        } 
-        catch (IOException e) {}
+    }
 
-        //String message = "Hello from Android.\n";
+    private void printData(outStream)
+    {
         byte[] msgBuffer = printContent.getBytes();
         try 
         {
@@ -111,12 +120,13 @@ public class Custom extends CordovaPlugin {
             try 
             {
                 outStream.flush();
+                outStream.close();
             }
             catch (IOException e) {}
 
             try 
             {
-                btSocket.close();
+
             }
             catch (IOException e) {}
         } 
