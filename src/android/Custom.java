@@ -30,7 +30,7 @@ public class Custom extends CordovaPlugin {
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private OutputStream outStream = null;
-    private BluetoothDevice btDevice = null
+    private BluetoothDevice btDevice = null;
     private String printContent = "";
     private String printMacAddress = "";
 
