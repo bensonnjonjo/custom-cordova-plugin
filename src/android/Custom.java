@@ -46,13 +46,13 @@ public class Custom extends CordovaPlugin {
                 printMacAddress = args.optString(1);
                 printConnect    = args.optString(2);
 
-                if("true".equals(printConnect))
-                {
+                //if("true".equals(printConnect))
+                //{
                     btAdapter = BluetoothAdapter.getDefaultAdapter();
                     if(CheckBTState()){
                         this.blueBambooConnect();
                     }
-                }
+                //}
                 else
                 {
                     this.blueBambooPrint();
