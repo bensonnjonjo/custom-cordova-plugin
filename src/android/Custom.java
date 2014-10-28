@@ -30,6 +30,8 @@ public class Custom extends CordovaPlugin {
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private OutputStream outStream = null;
+    private String printContent = "";
+    private String printMacAddress = "";
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     /* -- End Blue Bamboo Custom Code -- */
@@ -38,10 +40,16 @@ public class Custom extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         try {
             if ("print".equals(action)){
-                String content    = args.optString(0);
-                String mac_address = args.optString(1);
-                this.blueBambooPrint(content, mac_address);
+                printContent    = args.optString(0);
+                printMacAddress = args.optString(1);
+
+                btAdapter = BluetoothAdapter.getDefaultAdapter();
+                
+                if(CheckBTState()){
+                    this.blueBambooPrint();
+                }
                 callbackContext.success();
+
                 return true;
             }
             callbackContext.error("Invalid action");
@@ -53,13 +61,20 @@ public class Custom extends CordovaPlugin {
         }
     }
 
-    /* -- Blue Bamboo Custom Code -- */
-    private void blueBambooPrint(String content, String mac_address) 
-    {
-        btAdapter = BluetoothAdapter.getDefaultAdapter();
-        CheckBTState();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == REQUEST_ENABLE_BT) {
+            if (resultCode == RESULT_OK) {
+                this.blueBambooPrint();
+            }
+        }
+    }
 
-        BluetoothDevice device = btAdapter.getRemoteDevice(mac_address);
+    /* -- Blue Bamboo Custom Code -- */
+    private void blueBambooPrint() 
+    {
+        BluetoothDevice device = btAdapter.getRemoteDevice(printMacAddress);
         try 
         {
             btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
@@ -87,7 +102,7 @@ public class Custom extends CordovaPlugin {
         catch (IOException e) {}
 
         //String message = "Hello from Android.\n";
-        byte[] msgBuffer = content.getBytes();
+        byte[] msgBuffer = printContent.getBytes();
         try 
         {
             outStream.write(msgBuffer);
@@ -95,7 +110,7 @@ public class Custom extends CordovaPlugin {
         catch (IOException e) {}
     }
 
-    private void CheckBTState() 
+    private boolean CheckBTState() 
     {
         if(btAdapter!=null) 
         {
@@ -106,6 +121,8 @@ public class Custom extends CordovaPlugin {
                 cordova.startActivityForResult(this, enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
+
+        return btAdapter.isEnabled();
     }
     /* -- End Blue Bamboo Custom Code -- */
 }
