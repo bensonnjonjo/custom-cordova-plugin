@@ -103,6 +103,18 @@ public class Custom extends CordovaPlugin {
         try 
         {
             outStream.write(msgBuffer);
+
+            try 
+            {
+                outStream.flush();
+            }
+            catch (IOException e) {}
+
+            try 
+            {
+                btSocket.close();
+            }
+            catch (IOException e) {}
         } 
         catch (IOException e) {}
     }
