@@ -33,7 +33,6 @@ public class Custom extends CordovaPlugin {
     private BluetoothDevice btDevice = null;
     private String printContent = "";
     private String printMacAddress = "";
-    private String printConnect = "";
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     /* -- End Blue Bamboo Custom Code -- */
@@ -44,17 +43,11 @@ public class Custom extends CordovaPlugin {
             if ("print".equals(action)){
                 printContent    = args.optString(0);
                 printMacAddress = args.optString(1);
-                printConnect    = args.optString(2);
 
-                //if("true".equals(printConnect))
-                //{
+                if(btAdapter == null)
                     btAdapter = BluetoothAdapter.getDefaultAdapter();
-                    if(CheckBTState()){
-                        this.blueBambooConnect();
-                    }
-                //}
-                else
-                {
+
+                if(CheckBTState()){
                     this.blueBambooPrint();
                 }
                 callbackContext.success();
@@ -73,16 +66,19 @@ public class Custom extends CordovaPlugin {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == REQUEST_ENABLE_BT) {
-            this.blueBambooConnect();
+            this.blueBambooPrint();
         }
     }
 
-    private void blueBambooConnect()
+    /* -- Blue Bamboo Custom Code -- */
+    private void blueBambooPrint() 
     {
-        btDevice = btAdapter.getRemoteDevice(printMacAddress);
+        if(btDevice == null)
+            btDevice = btAdapter.getRemoteDevice(printMacAddress);
         try 
         {
-            btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
+            if(btSocket == null)
+                btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
         } 
         catch (IOException e) {}
 
@@ -105,11 +101,7 @@ public class Custom extends CordovaPlugin {
             outStream = btSocket.getOutputStream();
         } 
         catch (IOException e) {}
-    }
 
-    /* -- Blue Bamboo Custom Code -- */
-    private void blueBambooPrint() 
-    {
         //String message = "Hello from Android.\n";
         byte[] msgBuffer = printContent.getBytes();
         try 
@@ -119,6 +111,12 @@ public class Custom extends CordovaPlugin {
             try 
             {
                 outStream.flush();
+            }
+            catch (IOException e) {}
+
+            try 
+            {
+                btSocket.close();
             }
             catch (IOException e) {}
         } 
