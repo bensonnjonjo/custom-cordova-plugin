@@ -73,50 +73,36 @@ public class Custom extends CordovaPlugin {
     /* -- Blue Bamboo Custom Code -- */
     private void blueBambooPrint() 
     {
-        if(btSocket.isConnected()){
-            try 
-            {
-                outStream = btSocket.getOutputStream();
-                this.printData(outStream);
-            } 
-            catch (IOException e) {}
-        }
-        else{
-            if(btDevice == null)
-                btDevice = btAdapter.getRemoteDevice(printMacAddress);
-            try 
-            {
-                if(btSocket == null)
-                    btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
-            } 
-            catch (IOException e) {}
+        if(btDevice == null)
+            btDevice = btAdapter.getRemoteDevice(printMacAddress);
+        try 
+        {
+            if(btSocket == null)
+                btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
+        } 
+        catch (IOException e) {}
 
-            btAdapter.cancelDiscovery();
+        btAdapter.cancelDiscovery();
 
+        try 
+        {
+            btSocket.connect();
+        } 
+        catch (IOException e) {
             try 
             {
-                btSocket.connect();
+                btSocket.close();
             } 
-            catch (IOException e) {
-                try 
-                {
-                    btSocket.close();
-                } 
-                catch (IOException e2) {}
-            }
-
-            try 
-            {
-                outStream = btSocket.getOutputStream();
-                this.printData(outStream);
-            } 
-            catch (IOException e) {}
+            catch (IOException e2) {}
         }
 
-    }
+        try 
+        {
+            outStream = btSocket.getOutputStream();
+        } 
+        catch (IOException e) {}
 
-    private void printData(OutputStream outStream)
-    {
+        //String message = "Hello from Android.\n";
         byte[] msgBuffer = printContent.getBytes();
         try 
         {
@@ -125,7 +111,12 @@ public class Custom extends CordovaPlugin {
             try 
             {
                 outStream.flush();
-                outStream.close();
+            }
+            catch (IOException e) {}
+
+            try 
+            {
+                btSocket.close();
             }
             catch (IOException e) {}
         } 
