@@ -27,7 +27,6 @@ public class Custom extends CordovaPlugin {
 
     /* -- Blue Bamboo Custom Code -- */
     private static final int REQUEST_ENABLE_BT = 1;
-    private boolean btConnected = false;
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private OutputStream outStream = null;
@@ -44,11 +43,9 @@ public class Custom extends CordovaPlugin {
             if("connect".equals(action)){
                 printMacAddress = args.optString(0);
 
-                if(!btConnected){
-                    btAdapter = BluetoothAdapter.getDefaultAdapter();
-                    if(CheckBTState()){
-                        this.blueBambooConnect();
-                    }
+                btAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(CheckBTState()){
+                    this.blueBambooConnect();
                 }
                     
                 callbackContext.success();
@@ -56,9 +53,14 @@ public class Custom extends CordovaPlugin {
             }
 
             if ("print".equals(action)){
-                printContent = args.optString(0);
-                
-                this.blueBambooPrint();
+                printContent    = args.optString(0);
+                printMacAddress = args.optString(1);
+
+                //check bluetooth enabled
+                if(CheckBTState()){
+                    this.blueBambooCheck();
+                    this.blueBambooPrint();
+                }
 
                 callbackContext.success();
                 return true;
@@ -76,14 +78,26 @@ public class Custom extends CordovaPlugin {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == REQUEST_ENABLE_BT) {
+            this.blueBambooCheck();
+            this.blueBambooPrint();
+        }
+    }
+
+    private void blueBambooCheck()
+    {
+        if(btAdapter == null)
+            btAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        //check connected first
+        if(btSocket == null){
+            this.blueBambooConnect();
+        }else if(!btSocket.isConnected()){
             this.blueBambooConnect();
         }
     }
 
     private void blueBambooConnect()
     {
-        btConnected = true; 
-
         btDevice = btAdapter.getRemoteDevice(printMacAddress);
         try 
         {
