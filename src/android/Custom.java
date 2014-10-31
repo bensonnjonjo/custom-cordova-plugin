@@ -43,7 +43,9 @@ public class Custom extends CordovaPlugin {
             if("connect".equals(action)){
                 printMacAddress = args.optString(0);
 
-                btAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(btAdapter == null)
+                    btAdapter = BluetoothAdapter.getDefaultAdapter();
+
                 if(CheckBTState()){
                     this.blueBambooConnect();
                 }
@@ -53,14 +55,9 @@ public class Custom extends CordovaPlugin {
             }
 
             if ("print".equals(action)){
-                printContent    = args.optString(0);
-                printMacAddress = args.optString(1);
-
-                //check bluetooth enabled
-                if(CheckBTState()){
-                    this.blueBambooCheck();
-                    this.blueBambooPrint();
-                }
+                printContent = args.optString(0);
+                
+                this.blueBambooPrint();
 
                 callbackContext.success();
                 return true;
@@ -78,30 +75,19 @@ public class Custom extends CordovaPlugin {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == REQUEST_ENABLE_BT) {
-            this.blueBambooCheck();
-            this.blueBambooPrint();
-        }
-    }
-
-    private void blueBambooCheck()
-    {
-        if(btAdapter == null)
-            btAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        //check connected first
-        if(btSocket == null){
-            this.blueBambooConnect();
-        }else if(!btSocket.isConnected()){
             this.blueBambooConnect();
         }
     }
 
     private void blueBambooConnect()
     {
-        btDevice = btAdapter.getRemoteDevice(printMacAddress);
+        if(btDevice == null)
+            btDevice = btAdapter.getRemoteDevice(printMacAddress);
+
         try 
         {
-            btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
+            if(btSocket == null)
+                btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
         } 
         catch (IOException e) {}
 
@@ -109,7 +95,8 @@ public class Custom extends CordovaPlugin {
 
         try 
         {
-            btSocket.connect();
+            if(!btSocket.isConnected())
+                btSocket.connect();
         } 
         catch (IOException e) {
             try 
@@ -121,7 +108,8 @@ public class Custom extends CordovaPlugin {
 
         try 
         {
-            outStream = btSocket.getOutputStream();
+            if(outStream == null)
+                outStream = btSocket.getOutputStream();
         } 
         catch (IOException e) {}
     }
