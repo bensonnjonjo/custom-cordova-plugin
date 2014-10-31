@@ -63,6 +63,13 @@ public class Custom extends CordovaPlugin {
                 return true;
             }
 
+            if ("disconnect".equals(action)){
+                this.blueBambooDisconnect();
+
+                callbackContext.success();
+                return true;
+            }
+
             callbackContext.error("Invalid action");
             return false;
         } catch(Exception e) {
@@ -114,7 +121,25 @@ public class Custom extends CordovaPlugin {
         catch (IOException e) {}
     }
 
-    /* -- Blue Bamboo Custom Code -- */
+    private void blueBambooDisconnect()
+    {
+        //close socket connection
+        try 
+        {
+            if(btSocket != null)
+                btSocket.close();
+        }
+        catch (IOException e) {}
+
+        //turn off bluetooth
+        try 
+        {
+            if(btAdapter != null)
+                btAdapter.disable();
+        }
+        catch (IOException e) {}
+    }
+
     private void blueBambooPrint() 
     {
         byte[] msgBuffer = printContent.getBytes();
@@ -127,13 +152,6 @@ public class Custom extends CordovaPlugin {
                 outStream.flush();
             }
             catch (IOException e) {}
-
-            /*try 
-            {
-                btSocket.close();
-            }
-            catch (IOException e) {}
-            */
         } 
         catch (IOException e) {}
     }

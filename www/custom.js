@@ -65,7 +65,7 @@ Custom.prototype = {
 
         cordova.exec(null, null, 'Custom', 'print', [page, options]);
     },
-    
+
     connect: function (content, options) {
         var page    = content.innerHTML || content,
             options = options || {};
@@ -76,6 +76,18 @@ Custom.prototype = {
         }
 
         cordova.exec(null, null, 'Custom', 'connect', [page, options]);
+    }, 
+
+    disconnect: function (content, options) {
+        var page    = content.innerHTML || content,
+            options = options || {};
+
+        if (typeof page != 'string') {
+            console.log('Print function requires an HTML string. Not an object');
+            return;
+        }
+
+        cordova.exec(null, null, 'Custom', 'disconnect', [page, options]);
     }
 };
 
