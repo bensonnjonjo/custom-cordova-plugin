@@ -40,19 +40,27 @@ public class Custom extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         try {
-            if ("print".equals(action)){
-                printContent    = args.optString(0);
-                printMacAddress = args.optString(1);
+            if("connect".equals(action)){
+                printMacAddress = args.optString(0);
 
                 btAdapter = BluetoothAdapter.getDefaultAdapter();
-
                 if(CheckBTState()){
-                    this.blueBambooPrint();
+                    this.blueBambooConnect();
                 }
+                    
                 callbackContext.success();
-
                 return true;
             }
+
+            if ("print".equals(action)){
+                printContent = args.optString(0);
+                
+                this.blueBambooPrint();
+
+                callbackContext.success();
+                return true;
+            }
+
             callbackContext.error("Invalid action");
             return false;
         } catch(Exception e) {
@@ -65,7 +73,7 @@ public class Custom extends CordovaPlugin {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == REQUEST_ENABLE_BT) {
-            this.blueBambooPrint();
+            this.blueBambooConnect();
         }
     }
 
@@ -102,8 +110,6 @@ public class Custom extends CordovaPlugin {
     /* -- Blue Bamboo Custom Code -- */
     private void blueBambooPrint() 
     {
-        this.blueBambooConnect();
-        
         byte[] msgBuffer = printContent.getBytes();
         try 
         {
@@ -115,11 +121,12 @@ public class Custom extends CordovaPlugin {
             }
             catch (IOException e) {}
 
-            try 
+            /*try 
             {
                 btSocket.close();
             }
             catch (IOException e) {}
+            */
         } 
         catch (IOException e) {}
     }
