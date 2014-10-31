@@ -126,16 +126,14 @@ public class Custom extends CordovaPlugin {
         //close socket connection
         try 
         {
-            if(btSocket != null)
-                btSocket.close();
+            btSocket.close();
         }
         catch (IOException e) {}
 
         //turn off bluetooth
         try 
         {
-            if(btAdapter != null)
-                btAdapter.disable();
+            btAdapter.disable();
         }
         catch (IOException e) {}
     }
