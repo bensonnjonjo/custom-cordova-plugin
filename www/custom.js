@@ -64,7 +64,8 @@ Custom.prototype = {
         }
 
         cordova.exec(null, null, 'Custom', 'print', [page, options]);
-    }
+    },
+    
     connect: function (content, options) {
         var page    = content.innerHTML || content,
             options = options || {};
