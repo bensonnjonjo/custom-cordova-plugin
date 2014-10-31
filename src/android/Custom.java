@@ -44,8 +44,7 @@ public class Custom extends CordovaPlugin {
                 printContent    = args.optString(0);
                 printMacAddress = args.optString(1);
 
-                if(btAdapter == null)
-                    btAdapter = BluetoothAdapter.getDefaultAdapter();
+                btAdapter = BluetoothAdapter.getDefaultAdapter();
 
                 if(CheckBTState()){
                     this.blueBambooPrint();
@@ -70,15 +69,12 @@ public class Custom extends CordovaPlugin {
         }
     }
 
-    /* -- Blue Bamboo Custom Code -- */
-    private void blueBambooPrint() 
+    private void blueBambooConnect()
     {
-        if(btDevice == null)
-            btDevice = btAdapter.getRemoteDevice(printMacAddress);
+        btDevice = btAdapter.getRemoteDevice(printMacAddress);
         try 
         {
-            if(btSocket == null)
-                btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
+            btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
         } 
         catch (IOException e) {}
 
@@ -101,8 +97,13 @@ public class Custom extends CordovaPlugin {
             outStream = btSocket.getOutputStream();
         } 
         catch (IOException e) {}
+    }
 
-        //String message = "Hello from Android.\n";
+    /* -- Blue Bamboo Custom Code -- */
+    private void blueBambooPrint() 
+    {
+        this.blueBambooConnect();
+        
         byte[] msgBuffer = printContent.getBytes();
         try 
         {
