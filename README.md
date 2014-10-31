@@ -1,12 +1,11 @@
 custom-cordova-plugin
 =====================
 
-Custom Cordova Plugin
+<strong>Custom Cordova Plugin</strong>
 
 
-Install
-sudo phonegap local plugin add https://github.com/bensonnjonjo/custom-cordova-plugin.git
-
-
-Un-Install
-sudo phonegap local plugin remove de.appplant.cordova.plugin.custom
+<h6>Install</h6> <br>
+<code>sudo phonegap local plugin add https://github.com/bensonnjonjo/custom-cordova-plugin.git</code>
+<br><br>
+<h6>Un-Install</h6><br>
+<code>sudo phonegap local plugin remove de.appplant.cordova.plugin.custom</code>
