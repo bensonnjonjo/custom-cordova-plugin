@@ -27,6 +27,7 @@ public class Custom extends CordovaPlugin {
 
     /* -- Blue Bamboo Custom Code -- */
     private static final int REQUEST_ENABLE_BT = 1;
+    private boolean btConnected = false;
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private OutputStream outStream = null;
@@ -43,9 +44,11 @@ public class Custom extends CordovaPlugin {
             if("connect".equals(action)){
                 printMacAddress = args.optString(0);
 
-                btAdapter = BluetoothAdapter.getDefaultAdapter();
-                if(CheckBTState()){
-                    this.blueBambooConnect();
+                if(!btConnected){
+                    btAdapter = BluetoothAdapter.getDefaultAdapter();
+                    if(CheckBTState()){
+                        this.blueBambooConnect();
+                    }
                 }
                     
                 callbackContext.success();
@@ -79,6 +82,8 @@ public class Custom extends CordovaPlugin {
 
     private void blueBambooConnect()
     {
+        btConnected = true; 
+
         btDevice = btAdapter.getRemoteDevice(printMacAddress);
         try 
         {
