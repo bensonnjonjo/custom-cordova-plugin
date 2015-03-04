@@ -19,7 +19,11 @@
     under the License.
 */
 
-var Custom = {
+var Custom = function () {
+
+};
+
+Custom.prototype = {
     /**
      * Checks if the Custom service is avaible (iOS)
      * or if a printing app is installed on the device (Android).
@@ -87,4 +91,6 @@ var Custom = {
     }
 };
 
-module.exports = Custom;
+var plugin = new Custom();
+
+module.exports = plugin;
