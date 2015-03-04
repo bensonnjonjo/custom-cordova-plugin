@@ -19,11 +19,7 @@
     under the License.
 */
 
-var Custom = function () {
-
-};
-
-Custom.prototype = {
+var Custom = {
     /**
      * Checks if the Custom service is avaible (iOS)
      * or if a printing app is installed on the device (Android).
@@ -76,7 +72,7 @@ Custom.prototype = {
         }
 
         cordova.exec(null, null, 'Custom', 'connect', [page, options]);
-    }, 
+    },
 
     disconnect: function (content, options) {
         var page    = content.innerHTML || content,
@@ -91,6 +87,4 @@ Custom.prototype = {
     }
 };
 
-var plugin = new Custom();
-
-module.exports = plugin;
+module.exports = Custom;
