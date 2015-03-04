@@ -1,5 +1,5 @@
 package de.appplant.cordova.plugin.custom;
- 
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-/* -- Blue Bamboo Custom Code -- */ 
+/* -- Blue Bamboo Custom Code -- */
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
@@ -49,14 +49,14 @@ public class Custom extends CordovaPlugin {
                 if(CheckBTState()){
                     this.blueBambooConnect();
                 }
-                    
+
                 callbackContext.success();
                 return true;
             }
 
             if ("print".equals(action)){
                 printContent = args.optString(0);
-                
+
                 this.blueBambooPrint();
 
                 callbackContext.success();
@@ -70,7 +70,7 @@ public class Custom extends CordovaPlugin {
                 return true;
             }
 
-            callbackContext.error("Invalid action");
+            callbackContext.error("Invalid action --" + action);
             return false;
         } catch(Exception e) {
             System.err.println("Exception: " + e.getMessage());
@@ -91,40 +91,40 @@ public class Custom extends CordovaPlugin {
         if(btDevice == null)
             btDevice = btAdapter.getRemoteDevice(printMacAddress);
 
-        try 
+        try
         {
             if(btSocket == null)
                 btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
-        } 
+        }
         catch (IOException e) {}
 
         btAdapter.cancelDiscovery();
 
-        try 
+        try
         {
             if(!btSocket.isConnected())
                 btSocket.connect();
-        } 
+        }
         catch (IOException e) {
-            try 
+            try
             {
                 btSocket.close();
-            } 
+            }
             catch (IOException e2) {}
         }
 
-        try 
+        try
         {
             if(outStream == null)
                 outStream = btSocket.getOutputStream();
-        } 
+        }
         catch (IOException e) {}
     }
 
     private void blueBambooDisconnect()
     {
         //close socket connection
-        try 
+        try
         {
             if(btSocket != null)
                 btSocket.close();
@@ -136,27 +136,27 @@ public class Custom extends CordovaPlugin {
             btAdapter.disable();
     }
 
-    private void blueBambooPrint() 
+    private void blueBambooPrint()
     {
         byte[] msgBuffer = printContent.getBytes();
-        try 
+        try
         {
             outStream.write(msgBuffer);
 
-            try 
+            try
             {
                 outStream.flush();
             }
             catch (IOException e) {}
-        } 
+        }
         catch (IOException e) {}
     }
 
-    private boolean CheckBTState() 
+    private boolean CheckBTState()
     {
-        if(btAdapter!=null) 
+        if(btAdapter!=null)
         {
-            if (!btAdapter.isEnabled()) 
+            if (!btAdapter.isEnabled())
             {
                 //Prompt user to turn on Bluetooth
                 Intent enableBtIntent = new Intent(btAdapter.ACTION_REQUEST_ENABLE);
