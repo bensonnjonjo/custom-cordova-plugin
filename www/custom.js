@@ -66,16 +66,13 @@ Custom.prototype = {
         cordova.exec(null, null, 'Custom', 'print', [page, options]);
     },
 
-    connect: function (content, options) {
-        var page    = content.innerHTML || content,
-            options = options || {};
-
-        if (typeof page != 'string') {
-            console.log('Print function requires an HTML string. Not an object');
+    connect: function (content, successCallback, errorCallback) {
+        if (typeof content != 'string') {
+            console.log('Connect function requires a string.');
             return;
         }
 
-        cordova.exec(null, null, 'Custom', 'connect', [page, options]);
+        cordova.exec(successCallback, errorCallback, 'Custom', 'connect', [page, options]);
     },
 
     disconnect: function (content, options) {
