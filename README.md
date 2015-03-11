@@ -11,5 +11,5 @@ custom-cordova-plugin
 <code>sudo phonegap local plugin remove de.appplant.cordova.plugin.custom</code>
 <br><br>
 <h6>Meteor Cordova (for commit on  Oct 31, 2014)</h6>
-<code>meteor add cordova:de.appplant.cordova.plugin.custom@https://github.com/bensonnjonjo/custom-cordova-plugin/tarball/c8fa355d70347115e6c62beacb4916b3deda41df
+<code>meteor add cordova:de.appplant.cordova.plugin.custom@https://github.com/bensonnjonjo/custom-cordova-plugin/tarball/f3c6a1067c7cf838d3460f8d8bb7d4b6c0d989df
 </code>
