@@ -88,7 +88,7 @@ Custom.prototype = {
     },
 
     isconnected: function(successCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, 'Custom', 'isconnected', null);
+        cordova.exec(successCallback, errorCallback, 'Custom', 'isconnected', []);
     }
 };
 
