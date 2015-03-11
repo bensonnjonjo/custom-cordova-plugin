@@ -76,8 +76,12 @@ public class Custom extends CordovaPlugin {
                     return false;
                 }
                 if(btSocket.isConnected()){
-                    callbackContext.success();
-                    return true;
+                    if(btAdapter != null){
+                        if(btAdapter.isEnabled()){
+                            callbackContext.success();
+                            return true;
+                        }
+                    }
                 }
                 callbackContext.error("Not connected");
                 return false;
