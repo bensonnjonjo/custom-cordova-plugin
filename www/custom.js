@@ -66,7 +66,7 @@ Custom.prototype = {
         cordova.exec(null, null, 'Custom', 'print', [page, options]);
     },
 
-    connect: function (content, successCallback, errorCallback) {
+    connect: function (content, options, successCallback, errorCallback) {
         if (typeof content != 'string') {
             console.log('Connect function requires a string.');
             return;
