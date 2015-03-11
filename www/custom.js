@@ -72,7 +72,7 @@ Custom.prototype = {
             return;
         }
 
-        cordova.exec(successCallback, errorCallback, 'Custom', 'connect', [page, options]);
+        cordova.exec(successCallback, errorCallback, 'Custom', 'connect', [content, options]);
     },
 
     disconnect: function (content, options) {
