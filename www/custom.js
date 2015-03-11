@@ -85,6 +85,10 @@ Custom.prototype = {
         }
 
         cordova.exec(null, null, 'Custom', 'disconnect', [page, options]);
+    },
+
+    isconnected: function(successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, 'Custom', 'isconnected', null);
     }
 };
 

@@ -70,6 +70,19 @@ public class Custom extends CordovaPlugin {
                 return true;
             }
 
+            if ("isconnected".equals(action)){
+                if(btSocket == null){
+                    callbackContext.error("Not connected");
+                    return false;
+                }
+                if(btSocket.isConnected()){
+                    callbackContext.success();
+                    return true;
+                }
+                callbackContext.error("Not connected");
+                return false;
+            }
+
             callbackContext.error("Invalid action --" + action);
             return false;
         } catch(Exception e) {
